@@ -18,8 +18,8 @@
   --magenta:     #d966ff;
   --magenta-dim: rgba(217,102,255,0.1);
   --text-1: #ffffff;
-  --text-2: #b0b0b0;
-  --text-3: #505050;
+  --text-2: #d8d8d8;
+  --text-3: #999999;
   --font-h: 'Outfit', sans-serif;
   --font-m: 'JetBrains Mono', monospace;
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -426,7 +426,7 @@ body::after {
   line-height: 2; animation: fadeUp 0.55s var(--smooth) 0.28s both;
   opacity: 0;
 }
-.controls-bar .div { color: rgba(255,255,255,0.08); }
+.controls-bar .div { color: rgba(255,255,255,0.25); }
 .controls-bar .cgroup {
   display: flex; gap: 0.5rem; align-items: center;
   padding: 0.15rem 0.5rem; background: rgba(255,255,255,0.025);
