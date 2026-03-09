@@ -1116,7 +1116,7 @@ body.launch-flash::after {
   transition-duration: 0.01ms !important;
 }
 /* ══════════════════════════════════════════════
-   MOBILE CONTROLS — hidden, gesture zone used instead
+   MOBILE CONTROLS — always hidden, gestures used instead
 ══════════════════════════════════════════════ */
 .mobile-controls { display: none !important; }
 
@@ -1125,210 +1125,102 @@ body.launch-flash::after {
 ══════════════════════════════════════════════ */
 @media (pointer: coarse), (max-width: 700px) {
 
-  /* ── Full-screen game container ── */
+  /* Fix: only show gameScreen when it's active (prevents invisible overlay blocking menu) */
   #gameScreen.active {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
     overflow: hidden;
     height: 100vh;
     height: 100dvh;
-    padding: 0;
-    box-sizing: border-box;
   }
 
-  /* ── Outer layout: stack everything vertically, centered ── */
+  /* Stack the whole layout vertically and center it */
   .game-layout {
-    display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0;
-    padding: 4px 0 0;
+    gap: 6px;
+    padding: 6px 0 0;
     width: 100%;
     flex: 1;
     min-height: 0;
   }
 
-  /* ── Hide original side panels ── */
-  .side-panel { display: none !important; }
-
-  /* ── Board header ── */
-  .board-header {
+  /* Side panels sit above/below the board on mobile */
+  .side-panel {
     width: 92vw;
-    max-width: 340px;
-    padding: 0 2px;
-    margin-bottom: 4px;
+    max-width: 360px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
   }
 
-  /* ── Board: scale to fill screen width ── */
-  .board-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    gap: 0;
+  .side-panel.left  { order: 1; }
+  .board-col        { order: 2; }
+  .side-panel.right { order: 3; }
+
+  /* Compact panel blocks in a row */
+  .side-panel .panel-block {
+    flex: 1;
+    padding: 5px 8px;
+    min-width: 0;
   }
 
-  .board-wrap {
-    width: 92vw;
-    max-width: 340px;
-    /* Scale canvas from its native 300px to fill available width */
-    position: relative;
-  }
-
-  #gameCanvas {
-    width: 92vw !important;
-    max-width: 340px !important;
-    height: auto !important;
-    aspect-ratio: 1 / 2;
-    display: block;
-  }
-
-  /* ── Stats strip below the board ── */
-  /* Inject a mobile stats bar using a flex row */
+  /* Stats in a horizontal grid */
   .stat-rows {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 0;
-    width: 92vw;
-    max-width: 340px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-top: none;
-    border-radius: 0 0 6px 6px;
-    padding: 6px 4px;
-    box-sizing: border-box;
-    margin-bottom: 4px;
   }
 
   .sr {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1px;
     padding: 3px 2px;
-    border-right: 1px solid rgba(255,255,255,0.05);
+    border-right: 1px solid rgba(255,255,255,0.06);
   }
-  .sr:last-child, .sr-divider + .sr:nth-child(5) { border-right: none; }
-
+  .sr:last-child { border-right: none; }
   .sr-divider { display: none; }
 
-  .sr-l {
-    font-size: 0.38rem;
-    letter-spacing: 0.12em;
-    text-align: center;
-    white-space: nowrap;
-  }
-
-  .sr-v {
-    font-size: 0.85rem;
-    line-height: 1;
-    text-align: center;
-  }
-
-  .sr-v.mono { font-size: 0.62rem; }
-  .sr.secondary .sr-l { font-size: 0.36rem; }
-  .sr.secondary .sr-v { font-size: 0.72rem; }
+  .sr-l { font-size: 0.38rem; letter-spacing: 0.1em; text-align: center; }
+  .sr-v { font-size: 0.82rem; text-align: center; }
+  .sr-v.mono { font-size: 0.6rem; }
+  .sr.secondary .sr-v { font-size: 0.7rem; color: var(--text-2); }
   .sr.secondary .sr-v.mono { font-size: 0.58rem; }
 
-  /* ── Hold + Next: compact horizontal row above the board ── */
-  .mobile-hud {
-    display: flex !important;
+  /* Hold canvas compact */
+  #holdCanvas { width: 70px !important; height: auto !important; }
+
+  /* Next queue: horizontal strip */
+  .next-list {
     flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 92vw;
-    max-width: 340px;
-    gap: 6px;
-    margin-bottom: 4px;
-  }
-
-  .mobile-hud-hold,
-  .mobile-hud-next {
-    display: flex;
-    flex-direction: column;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 5px;
-    padding: 4px 6px;
-    gap: 3px;
-  }
-
-  .mobile-hud-hold { min-width: 60px; }
-  .mobile-hud-next { flex: 1; }
-
-  .mobile-hud-lbl {
-    font-family: var(--font-m);
-    font-size: 0.38rem;
-    letter-spacing: 0.3em;
-    color: var(--text-3);
-    text-transform: uppercase;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    padding-bottom: 2px;
-    margin-bottom: 2px;
-  }
-
-  /* DAS indicator — keep but compact */
-  .das-indicator { padding: 2px 4px; opacity: 0.5; }
-}
-
-/* ══════════════════════════════════════════════
-   MOBILE STATS STRIP + HUD
-══════════════════════════════════════════════ */
-@media (pointer: coarse), (max-width: 700px) {
-
-  .mobile-hud { display: flex !important; }
-  .mobile-stats-strip { display: flex !important; }
-
-  /* Stats strip */
-  .mobile-stats-strip {
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 92vw;
-    max-width: 340px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-top: none;
-    border-radius: 0 0 6px 6px;
-    overflow: hidden;
-    margin-top: -1px; /* attach to canvas border */
-  }
-
-  .mss-cell {
-    flex: 1 1 25%;
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    padding: 5px 2px 4px;
-    border-right: 1px solid rgba(255,255,255,0.05);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    min-width: 0;
+    flex-wrap: wrap;
+    gap: 4px;
   }
-  .mss-cell:nth-child(4n) { border-right: none; }
-  .mss-cell:nth-last-child(-n+4) { border-bottom: none; }
+  .next-canvas { width: 50px !important; height: auto !important; }
+  .next-main   { width: 60px !important; }
 
-  .mss-lbl {
-    font-family: var(--font-m);
-    font-size: 0.36rem;
-    letter-spacing: 0.2em;
-    color: var(--text-3);
-    text-transform: uppercase;
-    white-space: nowrap;
+  /* Board: scale up to fill screen width */
+  .board-col {
+    width: 100%;
+    align-items: center;
+  }
+  .board-header {
+    width: 92vw;
+    max-width: 360px;
+  }
+  .board-wrap {
+    width: 92vw;
+    max-width: 360px;
+  }
+  #gameCanvas {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 2;
   }
 
-  .mss-val {
-    font-family: var(--font-h);
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--text-1);
-    line-height: 1.1;
-    white-space: nowrap;
-  }
-  .mss-val.accent { color: var(--amber); }
-  .mss-val.mono {
-    font-family: var(--font-m);
-    font-size: 0.68rem;
-    font-weight: 500;
-  }
+  /* DAS indicator compact */
+  .das-indicator { padding: 2px 6px; opacity: 0.55; }
 }
