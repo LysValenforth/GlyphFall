@@ -1119,29 +1119,13 @@ body.launch-flash::after {
    MOBILE CONTROLS
 ══════════════════════════════════════════════ */
 
-/* Hidden by default on desktop */
+/* Hidden on all screen sizes — gesture control replaces button overlay */
 .mobile-controls {
-  display: none;
+  display: none !important;
 }
 
 @media (pointer: coarse), (max-width: 700px) {
-  /* Show mobile controls on touch devices or narrow screens */
-  .mobile-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 10px 8px 12px;
-    background: rgba(0,0,0,0.7);
-    border-top: 1px solid rgba(255,255,255,0.07);
-    width: 100%;
-    max-width: 420px;
-    margin: 0 auto;
-    box-sizing: border-box;
-    /* Prevent text selection during rapid taps */
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-  }
+  /* mobile-controls are hidden — gesture zone replaces button overlay */
 
   .mc-row {
     display: flex;
