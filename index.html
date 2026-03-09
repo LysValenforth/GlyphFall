@@ -144,6 +144,22 @@
 
             <!-- Board -->
             <div class="board-col">
+                <!-- Mobile HUD: Hold + Next + Stats shown above/below board on mobile -->
+                <div class="mobile-hud" style="display:none">
+                    <div class="mobile-hud-hold">
+                        <div class="mobile-hud-lbl">HOLD</div>
+                        <canvas id="holdCanvasMobile" width="80" height="62" style="width:72px;height:auto"></canvas>
+                    </div>
+                    <div class="mobile-hud-next">
+                        <div class="mobile-hud-lbl">NEXT</div>
+                        <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
+                            <canvas class="next-canvas-mobile" width="60" height="48" style="width:54px;height:auto"></canvas>
+                            <canvas class="next-canvas-mobile" width="50" height="38" style="width:44px;height:auto;opacity:0.7"></canvas>
+                            <canvas class="next-canvas-mobile" width="50" height="38" style="width:44px;height:auto;opacity:0.5"></canvas>
+                            <canvas class="next-canvas-mobile" width="50" height="38" style="width:44px;height:auto;opacity:0.35"></canvas>
+                        </div>
+                    </div>
+                </div>
                 <div class="board-header">
                     <div class="bh-mode" id="modeLabel">MARATHON</div>
                     <div class="bh-target" id="targetLabel"></div>
@@ -185,6 +201,18 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Mobile stats strip (shown below board on mobile) -->
+                <div class="mobile-stats-strip" style="display:none">
+                    <div class="mss-cell"><div class="mss-lbl">SCORE</div><div class="mss-val accent" id="mScore">0</div></div>
+                    <div class="mss-cell"><div class="mss-lbl">LINES</div><div class="mss-val" id="mLines">0</div></div>
+                    <div class="mss-cell"><div class="mss-lbl">LEVEL</div><div class="mss-val" id="mLevel">1</div></div>
+                    <div class="mss-cell"><div class="mss-lbl">COMBO</div><div class="mss-val accent" id="mCombo">0</div></div>
+                    <div class="mss-cell"><div class="mss-lbl">TIME</div><div class="mss-val mono" id="mTime">0:00</div></div>
+                    <div class="mss-cell"><div class="mss-lbl">PPS</div><div class="mss-val mono" id="mPPS">0.00</div></div>
+                    <div class="mss-cell"><div class="mss-lbl">B2B</div><div class="mss-val mono" id="mB2b">0</div></div>
+                    <div class="mss-cell"><div class="mss-lbl">APM</div><div class="mss-val mono" id="mApm">0</div></div>
                 </div>
             </div>
 

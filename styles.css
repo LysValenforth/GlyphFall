@@ -1116,152 +1116,219 @@ body.launch-flash::after {
   transition-duration: 0.01ms !important;
 }
 /* ══════════════════════════════════════════════
-   MOBILE CONTROLS
+   MOBILE CONTROLS — hidden, gesture zone used instead
 ══════════════════════════════════════════════ */
+.mobile-controls { display: none !important; }
 
-/* Hidden by default on desktop */
-.mobile-controls {
-  display: none;
-}
-
+/* ══════════════════════════════════════════════
+   MOBILE GAME LAYOUT
+══════════════════════════════════════════════ */
 @media (pointer: coarse), (max-width: 700px) {
-  /* Show mobile controls on touch devices or narrow screens */
-  .mobile-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 10px 8px 12px;
-    background: rgba(0,0,0,0.7);
-    border-top: 1px solid rgba(255,255,255,0.07);
-    width: 100%;
-    max-width: 420px;
-    margin: 0 auto;
-    box-sizing: border-box;
-    /* Prevent text selection during rapid taps */
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-  }
 
-  .mc-row {
-    display: flex;
-    gap: 6px;
-    justify-content: center;
-    align-items: center;
-  }
-
-  /* Base button style */
-  .mc-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 10px;
-    color: rgba(255,255,255,0.75);
-    cursor: pointer;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0;
-    /* Prevent tap highlight flicker */
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-    transition: background 0.07s, transform 0.07s, border-color 0.07s;
-    /* Consistent sizing */
-    width: 62px;
-    height: 52px;
-  }
-
-  .mc-btn svg {
-    width: 22px;
-    height: 22px;
-  }
-
-  .mc-btn:active,
-  .mc-btn.pressed {
-    background: rgba(255,255,255,0.14);
-    border-color: rgba(255,255,255,0.3);
-    transform: scale(0.94);
-    color: #fff;
-  }
-
-  /* Left & Right — wider */
-  .mc-left, .mc-right {
-    width: 76px;
-    height: 60px;
-  }
-  .mc-left svg, .mc-right svg { width: 28px; height: 28px; }
-
-  /* Soft drop — taller double-chevron */
-  .mc-soft {
-    width: 68px;
-    height: 60px;
-  }
-
-  /* Hard drop — accent colored */
-  .mc-hard {
-    border-color: rgba(255,225,0,0.25);
-    color: rgba(255,225,0,0.8);
-  }
-  .mc-hard:active { background: rgba(255,225,0,0.12); border-color: rgba(255,225,0,0.5); }
-
-  /* Hold */
-  .mc-hold {
-    border-color: rgba(100,180,255,0.25);
-    color: rgba(100,180,255,0.8);
-  }
-  .mc-hold:active { background: rgba(100,180,255,0.12); border-color: rgba(100,180,255,0.5); }
-
-  /* Rotate CW / CCW */
-  .mc-rot-cw, .mc-rot-ccw {
-    width: 62px;
-    height: 52px;
-  }
-
-  /* ── Responsive game layout on mobile ────────────────── */
-  /* IMPORTANT: only override display when the screen is actually active.
-     Without .active, this would force #gameScreen visible on top of the menu. */
+  /* ── Full-screen game container ── */
   #gameScreen.active {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
     overflow: hidden;
     height: 100vh;
-    height: 100dvh;  /* dynamic viewport height for mobile browsers */
+    height: 100dvh;
+    padding: 0;
+    box-sizing: border-box;
   }
 
+  /* ── Outer layout: stack everything vertically, centered ── */
   .game-layout {
-    flex-shrink: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 4px 0 0;
+    width: 100%;
+    flex: 1;
     min-height: 0;
   }
 
-  /* Tighten up the side panels on narrow screens */
-  .side-panel {
-    min-width: 80px;
+  /* ── Hide original side panels ── */
+  .side-panel { display: none !important; }
+
+  /* ── Board header ── */
+  .board-header {
+    width: 92vw;
+    max-width: 340px;
+    padding: 0 2px;
+    margin-bottom: 4px;
   }
-  .side-panel .panel-block {
+
+  /* ── Board: scale to fill screen width ── */
+  .board-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 0;
+  }
+
+  .board-wrap {
+    width: 92vw;
+    max-width: 340px;
+    /* Scale canvas from its native 300px to fill available width */
+    position: relative;
+  }
+
+  #gameCanvas {
+    width: 92vw !important;
+    max-width: 340px !important;
+    height: auto !important;
+    aspect-ratio: 1 / 2;
+    display: block;
+  }
+
+  /* ── Stats strip below the board ── */
+  /* Inject a mobile stats bar using a flex row */
+  .stat-rows {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    width: 92vw;
+    max-width: 340px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-top: none;
+    border-radius: 0 0 6px 6px;
     padding: 6px 4px;
+    box-sizing: border-box;
+    margin-bottom: 4px;
   }
-  .sr-l { font-size: 0.6rem; }
-  .sr-v { font-size: 0.75rem; }
+
+  .sr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    padding: 3px 2px;
+    border-right: 1px solid rgba(255,255,255,0.05);
+  }
+  .sr:last-child, .sr-divider + .sr:nth-child(5) { border-right: none; }
+
+  .sr-divider { display: none; }
+
+  .sr-l {
+    font-size: 0.38rem;
+    letter-spacing: 0.12em;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .sr-v {
+    font-size: 0.85rem;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .sr-v.mono { font-size: 0.62rem; }
+  .sr.secondary .sr-l { font-size: 0.36rem; }
+  .sr.secondary .sr-v { font-size: 0.72rem; }
+  .sr.secondary .sr-v.mono { font-size: 0.58rem; }
+
+  /* ── Hold + Next: compact horizontal row above the board ── */
+  .mobile-hud {
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 92vw;
+    max-width: 340px;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+
+  .mobile-hud-hold,
+  .mobile-hud-next {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 5px;
+    padding: 4px 6px;
+    gap: 3px;
+  }
+
+  .mobile-hud-hold { min-width: 60px; }
+  .mobile-hud-next { flex: 1; }
+
+  .mobile-hud-lbl {
+    font-family: var(--font-m);
+    font-size: 0.38rem;
+    letter-spacing: 0.3em;
+    color: var(--text-3);
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding-bottom: 2px;
+    margin-bottom: 2px;
+  }
+
+  /* DAS indicator — keep but compact */
+  .das-indicator { padding: 2px 4px; opacity: 0.5; }
 }
 
-/* Extra-narrow screens — hide side panels, use canvas swipe only */
-@media (max-width: 480px) {
-  .side-panel {
-    display: none;
+/* ══════════════════════════════════════════════
+   MOBILE STATS STRIP + HUD
+══════════════════════════════════════════════ */
+@media (pointer: coarse), (max-width: 700px) {
+
+  .mobile-hud { display: flex !important; }
+  .mobile-stats-strip { display: flex !important; }
+
+  /* Stats strip */
+  .mobile-stats-strip {
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 92vw;
+    max-width: 340px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    overflow: hidden;
+    margin-top: -1px; /* attach to canvas border */
   }
-  .game-layout {
-    justify-content: center;
+
+  .mss-cell {
+    flex: 1 1 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px 2px 4px;
+    border-right: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    min-width: 0;
   }
-  .board-col {
-    width: 100%;
+  .mss-cell:nth-child(4n) { border-right: none; }
+  .mss-cell:nth-last-child(-n+4) { border-bottom: none; }
+
+  .mss-lbl {
+    font-family: var(--font-m);
+    font-size: 0.36rem;
+    letter-spacing: 0.2em;
+    color: var(--text-3);
+    text-transform: uppercase;
+    white-space: nowrap;
   }
-  .mobile-controls {
-    max-width: 100%;
+
+  .mss-val {
+    font-family: var(--font-h);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-1);
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+  .mss-val.accent { color: var(--amber); }
+  .mss-val.mono {
+    font-family: var(--font-m);
+    font-size: 0.68rem;
+    font-weight: 500;
   }
 }

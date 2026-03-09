@@ -534,8 +534,13 @@ class Renderer {
 class UIManager {
     constructor() {
         this.els={score:document.getElementById('score'),lines:document.getElementById('lines'),level:document.getElementById('level'),time:document.getElementById('time'),pps:document.getElementById('pps'),apm:document.getElementById('apm'),combo:document.getElementById('combo'),b2b:document.getElementById('b2b')};
+        this.mob={score:document.getElementById('mScore'),lines:document.getElementById('mLines'),level:document.getElementById('mLevel'),time:document.getElementById('mTime'),pps:document.getElementById('mPPS'),apm:document.getElementById('mApm'),combo:document.getElementById('mCombo'),b2b:document.getElementById('mB2b')};
         this.actionEl=document.getElementById('actionDisplay');
         this.actionTimer=null; this._lastAction=''; this._lastScore=-1;
+    }
+    _set(key, val) {
+        if(this.els[key]) this.els[key].textContent = val;
+        if(this.mob[key]) this.mob[key].textContent = val;
     }
     update(state) {
         // Score flash on big clear
@@ -544,14 +549,16 @@ class UIManager {
             this._lastScore=state.score;
             if(state.bigClear){state.bigClear=false;scoreEl.classList.remove('score-flash');void scoreEl.offsetWidth;scoreEl.classList.add('score-flash');}
         }
-        scoreEl.textContent=state.score.toLocaleString();
-        this.els.lines.textContent=state.lines;
-        this.els.level.textContent=state.level;
-        this.els.time.textContent=this.fmtTime(state.elapsedTime);
-        this.els.pps.textContent=state.pps.toFixed(2);
-        this.els.apm.textContent=Math.floor(state.apm);
-        this.els.combo.textContent=Math.max(0,state.combo);
-        this.els.b2b.textContent=Math.max(0,state.b2b);
+        const scoreStr=state.score.toLocaleString();
+        scoreEl.textContent=scoreStr;
+        if(this.mob.score) this.mob.score.textContent=scoreStr;
+        this._set('lines', state.lines);
+        this._set('level', state.level);
+        this._set('time', this.fmtTime(state.elapsedTime));
+        this._set('pps', state.pps.toFixed(2));
+        this._set('apm', Math.floor(state.apm));
+        this._set('combo', Math.max(0,state.combo));
+        this._set('b2b', Math.max(0,state.b2b));
         if(state.lastActionText&&state.lastActionText!==this._lastAction){
             this._lastAction=state.lastActionText;
             this.showAction(state.lastActionText,state.lastActionColor);
@@ -782,160 +789,172 @@ class IdleAnimation {
 }
 
 // ─── TouchHandler ─────────────────────────────────────────────────────────────
-// Gesture-only controls — no button overlay:
-//   • Hold & drag left/right  → move piece column by column
-//   • Swipe up                → rotate CW  (double-tap / swipe up fast → rotate CCW)
-//   • Swipe down (fast)       → hard drop
-//   • Swipe down (slow)       → soft drop
-//   • Tap                     → rotate CW
-//   • Double-tap              → rotate CCW
 class TouchHandler {
     constructor() {
-        // Touch origin
-        this.touchStartX    = 0;
-        this.touchStartY    = 0;
+        this.touchStartX = 0;
+        this.touchStartY = 0;
         this.touchStartTime = 0;
-        this.lastTapTime    = 0;
-
-        // Drag state
-        this._dragging      = false;   // true once horizontal drag is confirmed
-        this._dragLastX     = 0;       // last processed x during drag
-        this._dragAccum     = 0;       // sub-cell pixel accumulator
+        this.lastTapTime = 0;
+        this._dasTimeout = null;
+        this._dasInterval = null;
+        this._softDropActive = false;
 
         // Thresholds
-        this.swipeThreshold = 28;   // min px for a directional swipe
-        this.dragInitThresh = 10;   // px horizontal before drag mode locks in
-        this.tapMaxMove     = 14;   // max total movement for a tap
-        this.tapMaxTime     = 250;  // max ms for tap
-        this.doubleTapGap   = 300;  // ms window for double-tap → rotate CCW
-        this.hardDropSpeed  = 0.65; // px/ms — above this = hard drop
+        this.swipeThreshold = 22;   // min px for swipe
+        this.tapMaxMove = 14;       // max movement for a tap
+        this.tapMaxTime = 230;      // max ms for tap
+        this.doubleTapGap = 280;    // ms window for double-tap → rotate CCW
+        this.hardDropSpeed = 0.7;   // px/ms — above this = hard drop, below = soft drop
 
-        // Board geometry (300 px wide, 10 columns → 30 px/cell)
-        this.cellWidth = 30;
-
-        this.setupListeners();
+        this.setupCanvasListeners();
+        this.setupButtonListeners();
     }
 
-    setupListeners() {
-        // Attach to the whole game screen so the full area responds to gestures
-        const zone = document.getElementById('gameScreen');
-        if (!zone) return;
-        zone.addEventListener('touchstart', e => this.onTouchStart(e), { passive: false });
-        zone.addEventListener('touchmove',  e => this.onTouchMove(e),  { passive: false });
-        zone.addEventListener('touchend',   e => this.onTouchEnd(e),   { passive: false });
-        zone.addEventListener('touchcancel',e => this._resetDrag(),    { passive: true  });
+    setupCanvasListeners() {
+        const canvas = document.getElementById('gameCanvas');
+        if (!canvas) return;
+        canvas.addEventListener('touchstart', e => this.onTouchStart(e), { passive: false });
+        canvas.addEventListener('touchend',   e => this.onTouchEnd(e),   { passive: false });
+        canvas.addEventListener('touchmove',  e => { e.preventDefault(); }, { passive: false });
     }
 
-    _resetDrag() {
-        this._dragging  = false;
-        this._dragAccum = 0;
+    setupButtonListeners() {
+        const wire = (id, onDown, onUp) => {
+            const btn = document.getElementById(id);
+            if (!btn) return;
+            btn.addEventListener('touchstart', e => { e.preventDefault(); onDown(); }, { passive: false });
+            btn.addEventListener('touchend',   e => { e.preventDefault(); if (onUp) onUp(); }, { passive: false });
+            // Also support mouse for non-touch testing
+            btn.addEventListener('mousedown', e => { e.preventDefault(); onDown(); });
+            btn.addEventListener('mouseup',   e => { e.preventDefault(); if (onUp) onUp(); });
+            btn.addEventListener('mouseleave',e => { if (onUp) onUp(); });
+        };
+
+        wire('mobileLeft',      () => this._startDAS(-1),      () => this._stopDAS());
+        wire('mobileRight',     () => this._startDAS(1),       () => this._stopDAS());
+        wire('mobileRotateCW',  () => this._rotate(1),         null);
+        wire('mobileRotateCCW', () => this._rotate(-1),        null);
+        wire('mobileHardDrop',  () => this._hardDrop(),        null);
+        wire('mobileSoftDrop',  () => this._startSoftDrop(),   () => this._stopSoftDrop());
+        wire('mobileHold',      () => this._hold(),            null);
     }
 
-    // ── Touch start ───────────────────────────────────────────────────────────
+    // ── Swipe / tap gestures ──────────────────────────────────────────────────
     onTouchStart(e) {
         e.preventDefault();
         const t = e.touches[0];
-        this.touchStartX    = t.clientX;
-        this.touchStartY    = t.clientY;
+        this.touchStartX = t.clientX;
+        this.touchStartY = t.clientY;
         this.touchStartTime = performance.now();
-        this._dragLastX     = t.clientX;
-        this._dragAccum     = 0;
-        this._dragging      = false;
     }
 
-    // ── Touch move — drives horizontal drag in real-time ─────────────────────
-    onTouchMove(e) {
-        e.preventDefault();
-        if (!game || !game.state || game.state.gameOver || game.state.paused) return;
-
-        const t      = e.touches[0];
-        const totalDx = t.clientX - this.touchStartX;
-        const totalDy = t.clientY - this.touchStartY;
-
-        // Lock into drag mode once horizontal movement dominates
-        if (!this._dragging) {
-            const absX = Math.abs(totalDx);
-            const absY = Math.abs(totalDy);
-            if (absX >= this.dragInitThresh && absX > absY) {
-                this._dragging  = true;
-                this._dragLastX = t.clientX;
-                this._dragAccum = 0;
-            } else if (absY > absX + 8) {
-                // Vertical intent — don't hijack as drag
-                return;
-            } else {
-                return; // not enough movement yet
-            }
-        }
-
-        // Accumulate pixel delta and fire moves per cell crossed
-        const delta = t.clientX - this._dragLastX;
-        this._dragLastX  = t.clientX;
-        this._dragAccum += delta;
-
-        const cells = Math.trunc(this._dragAccum / this.cellWidth);
-        if (cells !== 0) {
-            this._dragAccum -= cells * this.cellWidth;
-            const dir = Math.sign(cells);
-            for (let i = 0; i < Math.abs(cells); i++) {
-                if (game.state.movePiece(dir, 0)) game.audio.play('move');
-            }
-        }
-    }
-
-    // ── Touch end — classify gesture ──────────────────────────────────────────
     onTouchEnd(e) {
         e.preventDefault();
         if (!game || !game.state) return;
 
-        // Any touch resumes pause
-        if (game.state.paused) { game.togglePause(); this._resetDrag(); return; }
-        if (game.state.gameOver) { this._resetDrag(); return; }
+        // Resume from pause on any tap
+        if (game.state.paused) { game.togglePause(); return; }
+        if (game.state.gameOver) return;
 
-        const t    = e.changedTouches[0];
-        const dx   = t.clientX - this.touchStartX;
-        const dy   = t.clientY - this.touchStartY;
-        const dt   = performance.now() - this.touchStartTime;
-        const dist = Math.hypot(dx, dy);
-        const absX = Math.abs(dx);
-        const absY = Math.abs(dy);
+        const t = e.changedTouches[0];
+        const dx = t.clientX - this.touchStartX;
+        const dy = t.clientY - this.touchStartY;
+        const dt = performance.now() - this.touchStartTime;
+        const dist = Math.sqrt(dx * dx + dy * dy);
 
-        // ── Horizontal drag ended — nothing extra needed ───────────────────────
-        if (this._dragging) {
-            this._resetDrag();
-            return;
-        }
-
-        // ── Tap → rotate CW  /  double-tap → rotate CCW ───────────────────────
+        // ── Tap → rotate ──────────────────────────────────────────────────────
         if (dist < this.tapMaxMove && dt < this.tapMaxTime) {
             const now = performance.now();
             if (now - this.lastTapTime < this.doubleTapGap) {
+                // Double-tap → rotate CCW
                 if (game.state.rotatePiece(-1)) game.audio.play('rotate');
                 this.lastTapTime = 0;
             } else {
                 this.lastTapTime = now;
-                if (game.state.rotatePiece(1))  game.audio.play('rotate');
+                if (game.state.rotatePiece(1)) game.audio.play('rotate');
             }
             return;
         }
 
-        // ── Swipe up → rotate CW ─────────────────────────────────────────────
-        if (absY > absX && dy < -this.swipeThreshold) {
-            if (game.state.rotatePiece(1)) game.audio.play('rotate');
+        const absX = Math.abs(dx);
+        const absY = Math.abs(dy);
+
+        // ── Horizontal swipe → move ───────────────────────────────────────────
+        if (absX > absY && absX > this.swipeThreshold) {
+            const dir = dx > 0 ? 1 : -1;
+            if (game.state.movePiece(dir, 0)) game.audio.play('move');
             return;
         }
 
-        // ── Swipe down → hard drop (fast) or soft drop (slow) ────────────────
-        if (absY > absX && dy > this.swipeThreshold) {
-            const speed = absY / dt; // px/ms
-            if (speed >= this.hardDropSpeed) {
-                game.state.hardDrop();
-                game.audio.play('drop');
+        // ── Vertical swipe ────────────────────────────────────────────────────
+        if (absY > absX && absY > this.swipeThreshold) {
+            if (dy > 0) {
+                const speed = absY / dt; // px/ms
+                if (speed >= this.hardDropSpeed) {
+                    game.state.hardDrop();
+                    game.audio.play('drop');
+                } else {
+                    // Slow downward swipe → brief soft drop
+                    game.state.softDropping = true;
+                    setTimeout(() => { if (game && game.state) game.state.softDropping = false; }, 400);
+                }
             } else {
-                game.state.softDropping = true;
-                setTimeout(() => { if (game && game.state) game.state.softDropping = false; }, 400);
+                // Swipe up → hold
+                if (game.state.holdCurrentPiece()) game.audio.play('hold');
+                else game.audio.play('holdLocked');
             }
         }
+    }
+
+    // ── Button actions ────────────────────────────────────────────────────────
+    _startDAS(dir) {
+        if (!game || !game.state || game.state.gameOver || game.state.paused) return;
+        if (game.state.movePiece(dir, 0)) game.audio.play('move');
+        this._stopDAS();
+        const das = (game.input && game.input.das) || 133;
+        const arr = (game.input && game.input.arr) || 10;
+        this._dasTimeout = setTimeout(() => {
+            this._dasInterval = setInterval(() => {
+                if (!game || !game.state || game.state.gameOver || game.state.paused) { this._stopDAS(); return; }
+                if (game.state.movePiece(dir, 0)) game.audio.play('move');
+            }, Math.max(arr, 16));
+        }, das);
+    }
+
+    _stopDAS() {
+        clearTimeout(this._dasTimeout);
+        clearInterval(this._dasInterval);
+        this._dasTimeout = null;
+        this._dasInterval = null;
+    }
+
+    _rotate(dir) {
+        if (!game || !game.state || game.state.gameOver || game.state.paused) return;
+        if (game.state.rotatePiece(dir)) game.audio.play('rotate');
+    }
+
+    _hardDrop() {
+        if (!game || !game.state || game.state.gameOver || game.state.paused) return;
+        game.state.hardDrop();
+        game.audio.play('drop');
+    }
+
+    _startSoftDrop() {
+        if (!game || !game.state) return;
+        game.state.softDropping = true;
+        this._softDropActive = true;
+    }
+
+    _stopSoftDrop() {
+        if (!game || !game.state) return;
+        game.state.softDropping = false;
+        this._softDropActive = false;
+    }
+
+    _hold() {
+        if (!game || !game.state || game.state.gameOver || game.state.paused) return;
+        if (game.state.holdCurrentPiece()) game.audio.play('hold');
+        else game.audio.play('holdLocked');
     }
 }
 
