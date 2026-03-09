@@ -1115,3 +1115,151 @@ body.launch-flash::after {
   animation-iteration-count: 1 !important;
   transition-duration: 0.01ms !important;
 }
+/* ══════════════════════════════════════════════
+   MOBILE CONTROLS
+══════════════════════════════════════════════ */
+
+/* Hidden by default on desktop */
+.mobile-controls {
+  display: none;
+}
+
+@media (pointer: coarse), (max-width: 700px) {
+  /* Show mobile controls on touch devices or narrow screens */
+  .mobile-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 8px 12px;
+    background: rgba(0,0,0,0.7);
+    border-top: 1px solid rgba(255,255,255,0.07);
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    /* Prevent text selection during rapid taps */
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+
+  .mc-row {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Base button style */
+  .mc-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    color: rgba(255,255,255,0.75);
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0;
+    /* Prevent tap highlight flicker */
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: background 0.07s, transform 0.07s, border-color 0.07s;
+    /* Consistent sizing */
+    width: 62px;
+    height: 52px;
+  }
+
+  .mc-btn svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .mc-btn:active,
+  .mc-btn.pressed {
+    background: rgba(255,255,255,0.14);
+    border-color: rgba(255,255,255,0.3);
+    transform: scale(0.94);
+    color: #fff;
+  }
+
+  /* Left & Right — wider */
+  .mc-left, .mc-right {
+    width: 76px;
+    height: 60px;
+  }
+  .mc-left svg, .mc-right svg { width: 28px; height: 28px; }
+
+  /* Soft drop — taller double-chevron */
+  .mc-soft {
+    width: 68px;
+    height: 60px;
+  }
+
+  /* Hard drop — accent colored */
+  .mc-hard {
+    border-color: rgba(255,225,0,0.25);
+    color: rgba(255,225,0,0.8);
+  }
+  .mc-hard:active { background: rgba(255,225,0,0.12); border-color: rgba(255,225,0,0.5); }
+
+  /* Hold */
+  .mc-hold {
+    border-color: rgba(100,180,255,0.25);
+    color: rgba(100,180,255,0.8);
+  }
+  .mc-hold:active { background: rgba(100,180,255,0.12); border-color: rgba(100,180,255,0.5); }
+
+  /* Rotate CW / CCW */
+  .mc-rot-cw, .mc-rot-ccw {
+    width: 62px;
+    height: 52px;
+  }
+
+  /* ── Responsive game layout on mobile ────────────────── */
+  #gameScreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    height: 100vh;
+    height: 100dvh;  /* dynamic viewport height for mobile browsers */
+  }
+
+  .game-layout {
+    flex-shrink: 1;
+    min-height: 0;
+  }
+
+  /* Tighten up the side panels on narrow screens */
+  .side-panel {
+    min-width: 80px;
+  }
+  .side-panel .panel-block {
+    padding: 6px 4px;
+  }
+  .sr-l { font-size: 0.6rem; }
+  .sr-v { font-size: 0.75rem; }
+}
+
+/* Extra-narrow screens — hide side panels, use canvas swipe only */
+@media (max-width: 480px) {
+  .side-panel {
+    display: none;
+  }
+  .game-layout {
+    justify-content: center;
+  }
+  .board-col {
+    width: 100%;
+  }
+  .mobile-controls {
+    max-width: 100%;
+  }
+}
