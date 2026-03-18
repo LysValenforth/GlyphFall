@@ -9,13 +9,13 @@ const BUFFER_HEIGHT  = 20;
 const CELL_SIZE      = 30;
 
 const TETROMINOES = {
-    I: { color:'#dce8ff', shapes:[[[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],[[0,0,1,0],[0,0,1,0],[0,0,1,0],[0,0,1,0]],[[0,0,0,0],[0,0,0,0],[1,1,1,1],[0,0,0,0]],[[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]]], wallKicks:{'0->1':[[0,0],[-2,0],[1,0],[-2,-1],[1,2]],'1->0':[[0,0],[2,0],[-1,0],[2,1],[-1,-2]],'1->2':[[0,0],[-1,0],[2,0],[-1,2],[2,-1]],'2->1':[[0,0],[1,0],[-2,0],[1,-2],[-2,1]],'2->3':[[0,0],[2,0],[-1,0],[2,1],[-1,-2]],'3->2':[[0,0],[-2,0],[1,0],[-2,-1],[1,2]],'3->0':[[0,0],[1,0],[-2,0],[1,-2],[-2,1]],'0->3':[[0,0],[-1,0],[2,0],[-1,2],[2,-1]]}},
-    O: { color:'#fffadc', shapes:[[[0,1,1,0],[0,1,1,0],[0,0,0,0],[0,0,0,0]],[[0,1,1,0],[0,1,1,0],[0,0,0,0],[0,0,0,0]],[[0,1,1,0],[0,1,1,0],[0,0,0,0],[0,0,0,0]],[[0,1,1,0],[0,1,1,0],[0,0,0,0],[0,0,0,0]]], wallKicks:{}},
-    T: { color:'#e8d8ff', shapes:[[[0,1,0],[1,1,1],[0,0,0]],[[0,1,0],[0,1,1],[0,1,0]],[[0,0,0],[1,1,1],[0,1,0]],[[0,1,0],[1,1,0],[0,1,0]]], wallKicks:{'0->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'1->0':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'1->2':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'2->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'2->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]],'3->2':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'3->0':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'0->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]]}},
-    S: { color:'#d8f5e8', shapes:[[[0,1,1],[1,1,0],[0,0,0]],[[0,1,0],[0,1,1],[0,0,1]],[[0,0,0],[0,1,1],[1,1,0]],[[1,0,0],[1,1,0],[0,1,0]]], wallKicks:{'0->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'1->0':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'1->2':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'2->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'2->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]],'3->2':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'3->0':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'0->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]]}},
-    Z: { color:'#ffd8d8', shapes:[[[1,1,0],[0,1,1],[0,0,0]],[[0,0,1],[0,1,1],[0,1,0]],[[0,0,0],[1,1,0],[0,1,1]],[[0,1,0],[1,1,0],[1,0,0]]], wallKicks:{'0->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'1->0':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'1->2':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'2->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'2->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]],'3->2':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'3->0':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'0->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]]}},
-    J: { color:'#d8eeff', shapes:[[[1,0,0],[1,1,1],[0,0,0]],[[0,1,1],[0,1,0],[0,1,0]],[[0,0,0],[1,1,1],[0,0,1]],[[0,1,0],[0,1,0],[1,1,0]]], wallKicks:{'0->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'1->0':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'1->2':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'2->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'2->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]],'3->2':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'3->0':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'0->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]]}},
-    L: { color:'#fff0d8', shapes:[[[0,0,1],[1,1,1],[0,0,0]],[[0,1,0],[0,1,0],[0,1,1]],[[0,0,0],[1,1,1],[1,0,0]],[[1,1,0],[0,1,0],[0,1,0]]], wallKicks:{'0->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'1->0':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'1->2':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'2->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'2->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]],'3->2':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'3->0':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'0->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]]}},
+    I: { color:'#7eb8d4', shapes:[[[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],[[0,0,1,0],[0,0,1,0],[0,0,1,0],[0,0,1,0]],[[0,0,0,0],[0,0,0,0],[1,1,1,1],[0,0,0,0]],[[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]]], wallKicks:{'0->1':[[0,0],[-2,0],[1,0],[-2,-1],[1,2]],'1->0':[[0,0],[2,0],[-1,0],[2,1],[-1,-2]],'1->2':[[0,0],[-1,0],[2,0],[-1,2],[2,-1]],'2->1':[[0,0],[1,0],[-2,0],[1,-2],[-2,1]],'2->3':[[0,0],[2,0],[-1,0],[2,1],[-1,-2]],'3->2':[[0,0],[-2,0],[1,0],[-2,-1],[1,2]],'3->0':[[0,0],[1,0],[-2,0],[1,-2],[-2,1]],'0->3':[[0,0],[-1,0],[2,0],[-1,2],[2,-1]]}},
+    O: { color:'#c9a65b', shapes:[[[0,1,1,0],[0,1,1,0],[0,0,0,0],[0,0,0,0]],[[0,1,1,0],[0,1,1,0],[0,0,0,0],[0,0,0,0]],[[0,1,1,0],[0,1,1,0],[0,0,0,0],[0,0,0,0]],[[0,1,1,0],[0,1,1,0],[0,0,0,0],[0,0,0,0]]], wallKicks:{}},
+    T: { color:'#cc1a1a', shapes:[[[0,1,0],[1,1,1],[0,0,0]],[[0,1,0],[0,1,1],[0,1,0]],[[0,0,0],[1,1,1],[0,1,0]],[[0,1,0],[1,1,0],[0,1,0]]], wallKicks:{'0->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'1->0':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'1->2':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'2->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'2->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]],'3->2':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'3->0':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'0->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]]}},
+    S: { color:'#6b9e78', shapes:[[[0,1,1],[1,1,0],[0,0,0]],[[0,1,0],[0,1,1],[0,0,1]],[[0,0,0],[0,1,1],[1,1,0]],[[1,0,0],[1,1,0],[0,1,0]]], wallKicks:{'0->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'1->0':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'1->2':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'2->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'2->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]],'3->2':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'3->0':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'0->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]]}},
+    Z: { color:'#c45c2a', shapes:[[[1,1,0],[0,1,1],[0,0,0]],[[0,0,1],[0,1,1],[0,1,0]],[[0,0,0],[1,1,0],[0,1,1]],[[0,1,0],[1,1,0],[1,0,0]]], wallKicks:{'0->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'1->0':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'1->2':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'2->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'2->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]],'3->2':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'3->0':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'0->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]]}},
+    J: { color:'#3a5f8a', shapes:[[[1,0,0],[1,1,1],[0,0,0]],[[0,1,1],[0,1,0],[0,1,0]],[[0,0,0],[1,1,1],[0,0,1]],[[0,1,0],[0,1,0],[1,1,0]]], wallKicks:{'0->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'1->0':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'1->2':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'2->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'2->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]],'3->2':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'3->0':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'0->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]]}},
+    L: { color:'#d4b896', shapes:[[[0,0,1],[1,1,1],[0,0,0]],[[0,1,0],[0,1,0],[0,1,1]],[[0,0,0],[1,1,1],[1,0,0]],[[1,1,0],[0,1,0],[0,1,0]]], wallKicks:{'0->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'1->0':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'1->2':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'2->1':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'2->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]],'3->2':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'3->0':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'0->3':[[0,0],[1,0],[1,1],[0,-2],[1,-2]]}},
     G: { color:'#445566', shapes:[], wallKicks:{} }
 };
 
@@ -459,6 +459,29 @@ class Renderer {
         if(isGhost){ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.strokeRect(px+2,py+2,size-4,size-4);ctx.restore();return;}
         switch(theme){
             case 'glyph': ctx.strokeStyle=color;ctx.lineWidth=2;ctx.strokeRect(px+1,py+1,size-2,size-2);ctx.globalAlpha=alpha*0.35;ctx.strokeStyle=color;ctx.lineWidth=1;ctx.strokeRect(px+5,py+5,size-10,size-10);break;
+            case 'tsushima': {
+                // Step 1: solid dark base at full opacity
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = '#0a0a0a';
+                ctx.fillRect(px, py, size, size);
+                // Step 2: subtle color wash inside
+                ctx.globalAlpha = alpha * 0.18;
+                ctx.fillStyle = color;
+                ctx.fillRect(px + 2, py + 2, size - 4, size - 4);
+                // Step 3: crisp outer border with glow
+                ctx.globalAlpha = alpha;
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.shadowBlur = 6;
+                ctx.shadowColor = color;
+                ctx.strokeRect(px + 0.75, py + 0.75, size - 1.5, size - 1.5);
+                ctx.shadowBlur = 0;
+                // Step 4: bright top-edge shimmer line
+                ctx.globalAlpha = alpha * 0.55;
+                ctx.fillStyle = color;
+                ctx.fillRect(px + 2, py + 2, size - 4, 1.5);
+                break;
+            }
             case 'neon': ctx.shadowBlur=18;ctx.shadowColor=color;ctx.fillStyle=color;ctx.fillRect(px,py,size,size);ctx.shadowBlur=4;ctx.fillStyle=this.lighten(color,40);ctx.fillRect(px+3,py+3,size-6,3);break;
             case 'minimal': ctx.fillStyle=color+'55';ctx.fillRect(px,py,size,size);ctx.strokeStyle=color+'aa';ctx.lineWidth=1;ctx.strokeRect(px,py,size,size);break;
             case 'crystal':{const g=ctx.createLinearGradient(px,py,px+size,py+size);g.addColorStop(0,color+'cc');g.addColorStop(0.5,color+'88');g.addColorStop(1,color+'33');ctx.fillStyle=g;ctx.fillRect(px,py,size,size);ctx.fillStyle='rgba(255,255,255,0.22)';ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px+size*0.6,py);ctx.lineTo(px,py+size*0.6);ctx.closePath();ctx.fill();ctx.strokeStyle=color;ctx.lineWidth=1;ctx.strokeRect(px,py,size,size);break;}
@@ -516,6 +539,25 @@ class Renderer {
         const p=1,s=cs-p*2;
         switch(theme){
             case 'glyph': ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.strokeRect(p,p,s,s);break;
+            case 'tsushima': {
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = '#0a0a0a';
+                ctx.fillRect(p, p, s, s);
+                ctx.globalAlpha = 0.18;
+                ctx.fillStyle = color;
+                ctx.fillRect(p + 1, p + 1, s - 2, s - 2);
+                ctx.globalAlpha = 1;
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.shadowBlur = 5;
+                ctx.shadowColor = color;
+                ctx.strokeRect(p + 0.75, p + 0.75, s - 1.5, s - 1.5);
+                ctx.shadowBlur = 0;
+                ctx.globalAlpha = 0.5;
+                ctx.fillStyle = color;
+                ctx.fillRect(p + 1, p + 1, s - 2, 1.5);
+                break;
+            }
             case 'neon': ctx.shadowBlur=8;ctx.shadowColor=color;ctx.fillStyle=color;ctx.fillRect(p,p,s,s);break;
             case 'minimal': ctx.fillStyle=color+'55';ctx.fillRect(p,p,s,s);ctx.strokeStyle=color+'aa';ctx.lineWidth=1;ctx.strokeRect(p,p,s,s);break;
             case 'crystal': ctx.fillStyle=color+'aa';ctx.fillRect(p,p,s,s);ctx.fillStyle='rgba(255,255,255,0.2)';ctx.fillRect(p,p,s*0.5,s*0.5);break;
@@ -534,13 +576,8 @@ class Renderer {
 class UIManager {
     constructor() {
         this.els={score:document.getElementById('score'),lines:document.getElementById('lines'),level:document.getElementById('level'),time:document.getElementById('time'),pps:document.getElementById('pps'),apm:document.getElementById('apm'),combo:document.getElementById('combo'),b2b:document.getElementById('b2b')};
-        this.mob={score:document.getElementById('mScore'),lines:document.getElementById('mLines'),level:document.getElementById('mLevel'),time:document.getElementById('mTime'),pps:document.getElementById('mPPS'),apm:document.getElementById('mApm'),combo:document.getElementById('mCombo'),b2b:document.getElementById('mB2b')};
         this.actionEl=document.getElementById('actionDisplay');
         this.actionTimer=null; this._lastAction=''; this._lastScore=-1;
-    }
-    _set(key, val) {
-        if(this.els[key]) this.els[key].textContent = val;
-        if(this.mob[key]) this.mob[key].textContent = val;
     }
     update(state) {
         // Score flash on big clear
@@ -549,16 +586,14 @@ class UIManager {
             this._lastScore=state.score;
             if(state.bigClear){state.bigClear=false;scoreEl.classList.remove('score-flash');void scoreEl.offsetWidth;scoreEl.classList.add('score-flash');}
         }
-        const scoreStr=state.score.toLocaleString();
-        scoreEl.textContent=scoreStr;
-        if(this.mob.score) this.mob.score.textContent=scoreStr;
-        this._set('lines', state.lines);
-        this._set('level', state.level);
-        this._set('time', this.fmtTime(state.elapsedTime));
-        this._set('pps', state.pps.toFixed(2));
-        this._set('apm', Math.floor(state.apm));
-        this._set('combo', Math.max(0,state.combo));
-        this._set('b2b', Math.max(0,state.b2b));
+        scoreEl.textContent=state.score.toLocaleString();
+        this.els.lines.textContent=state.lines;
+        this.els.level.textContent=state.level;
+        this.els.time.textContent=this.fmtTime(state.elapsedTime);
+        this.els.pps.textContent=state.pps.toFixed(2);
+        this.els.apm.textContent=Math.floor(state.apm);
+        this.els.combo.textContent=Math.max(0,state.combo);
+        this.els.b2b.textContent=Math.max(0,state.b2b);
         if(state.lastActionText&&state.lastActionText!==this._lastAction){
             this._lastAction=state.lastActionText;
             this.showAction(state.lastActionText,state.lastActionColor);
@@ -691,7 +726,7 @@ class AudioManager {
 // ─── SettingsManager ──────────────────────────────────────────────────────────
 class SettingsManager {
     constructor(){
-        this.defaults={das:133,arr:10,softDropFactor:20,sfxVolume:70,musicVolume:40,ghostPiece:true,particleEffects:true,showCountdown:true,queueSize:5,theme:'solid',ghostOpacity:30,accentColor:'#ffffff',reducedMotion:false};
+        this.defaults={das:133,arr:10,softDropFactor:20,sfxVolume:70,musicVolume:40,ghostPiece:true,particleEffects:true,showCountdown:true,queueSize:5,theme:'tsushima',ghostOpacity:30,accentColor:'#ffffff',reducedMotion:false};
         this.data={...this.defaults};this.load();
     }
     load(){try{const s=localStorage.getItem('glypfallSettings');if(s)this.data={...this.defaults,...JSON.parse(s)};}catch(e){}}
@@ -789,172 +824,160 @@ class IdleAnimation {
 }
 
 // ─── TouchHandler ─────────────────────────────────────────────────────────────
+// Gesture-only controls — no button overlay:
+//   • Hold & drag left/right  → move piece column by column
+//   • Swipe up                → rotate CW  (double-tap / swipe up fast → rotate CCW)
+//   • Swipe down (fast)       → hard drop
+//   • Swipe down (slow)       → soft drop
+//   • Tap                     → rotate CW
+//   • Double-tap              → rotate CCW
 class TouchHandler {
     constructor() {
-        this.touchStartX = 0;
-        this.touchStartY = 0;
+        // Touch origin
+        this.touchStartX    = 0;
+        this.touchStartY    = 0;
         this.touchStartTime = 0;
-        this.lastTapTime = 0;
-        this._dasTimeout = null;
-        this._dasInterval = null;
-        this._softDropActive = false;
+        this.lastTapTime    = 0;
+
+        // Drag state
+        this._dragging      = false;   // true once horizontal drag is confirmed
+        this._dragLastX     = 0;       // last processed x during drag
+        this._dragAccum     = 0;       // sub-cell pixel accumulator
 
         // Thresholds
-        this.swipeThreshold = 22;   // min px for swipe
-        this.tapMaxMove = 14;       // max movement for a tap
-        this.tapMaxTime = 230;      // max ms for tap
-        this.doubleTapGap = 280;    // ms window for double-tap → rotate CCW
-        this.hardDropSpeed = 0.7;   // px/ms — above this = hard drop, below = soft drop
+        this.swipeThreshold = 28;   // min px for a directional swipe
+        this.dragInitThresh = 10;   // px horizontal before drag mode locks in
+        this.tapMaxMove     = 14;   // max total movement for a tap
+        this.tapMaxTime     = 250;  // max ms for tap
+        this.doubleTapGap   = 300;  // ms window for double-tap → rotate CCW
+        this.hardDropSpeed  = 0.65; // px/ms — above this = hard drop
 
-        this.setupCanvasListeners();
-        this.setupButtonListeners();
+        // Board geometry (300 px wide, 10 columns → 30 px/cell)
+        this.cellWidth = 30;
+
+        this.setupListeners();
     }
 
-    setupCanvasListeners() {
-        const canvas = document.getElementById('gameCanvas');
-        if (!canvas) return;
-        canvas.addEventListener('touchstart', e => this.onTouchStart(e), { passive: false });
-        canvas.addEventListener('touchend',   e => this.onTouchEnd(e),   { passive: false });
-        canvas.addEventListener('touchmove',  e => { e.preventDefault(); }, { passive: false });
+    setupListeners() {
+        // Attach to the whole game screen so the full area responds to gestures
+        const zone = document.getElementById('gameScreen');
+        if (!zone) return;
+        zone.addEventListener('touchstart', e => this.onTouchStart(e), { passive: false });
+        zone.addEventListener('touchmove',  e => this.onTouchMove(e),  { passive: false });
+        zone.addEventListener('touchend',   e => this.onTouchEnd(e),   { passive: false });
+        zone.addEventListener('touchcancel',e => this._resetDrag(),    { passive: true  });
     }
 
-    setupButtonListeners() {
-        const wire = (id, onDown, onUp) => {
-            const btn = document.getElementById(id);
-            if (!btn) return;
-            btn.addEventListener('touchstart', e => { e.preventDefault(); onDown(); }, { passive: false });
-            btn.addEventListener('touchend',   e => { e.preventDefault(); if (onUp) onUp(); }, { passive: false });
-            // Also support mouse for non-touch testing
-            btn.addEventListener('mousedown', e => { e.preventDefault(); onDown(); });
-            btn.addEventListener('mouseup',   e => { e.preventDefault(); if (onUp) onUp(); });
-            btn.addEventListener('mouseleave',e => { if (onUp) onUp(); });
-        };
-
-        wire('mobileLeft',      () => this._startDAS(-1),      () => this._stopDAS());
-        wire('mobileRight',     () => this._startDAS(1),       () => this._stopDAS());
-        wire('mobileRotateCW',  () => this._rotate(1),         null);
-        wire('mobileRotateCCW', () => this._rotate(-1),        null);
-        wire('mobileHardDrop',  () => this._hardDrop(),        null);
-        wire('mobileSoftDrop',  () => this._startSoftDrop(),   () => this._stopSoftDrop());
-        wire('mobileHold',      () => this._hold(),            null);
+    _resetDrag() {
+        this._dragging  = false;
+        this._dragAccum = 0;
     }
 
-    // ── Swipe / tap gestures ──────────────────────────────────────────────────
+    // ── Touch start ───────────────────────────────────────────────────────────
     onTouchStart(e) {
         e.preventDefault();
         const t = e.touches[0];
-        this.touchStartX = t.clientX;
-        this.touchStartY = t.clientY;
+        this.touchStartX    = t.clientX;
+        this.touchStartY    = t.clientY;
         this.touchStartTime = performance.now();
+        this._dragLastX     = t.clientX;
+        this._dragAccum     = 0;
+        this._dragging      = false;
     }
 
+    // ── Touch move — drives horizontal drag in real-time ─────────────────────
+    onTouchMove(e) {
+        e.preventDefault();
+        if (!game || !game.state || game.state.gameOver || game.state.paused) return;
+
+        const t      = e.touches[0];
+        const totalDx = t.clientX - this.touchStartX;
+        const totalDy = t.clientY - this.touchStartY;
+
+        // Lock into drag mode once horizontal movement dominates
+        if (!this._dragging) {
+            const absX = Math.abs(totalDx);
+            const absY = Math.abs(totalDy);
+            if (absX >= this.dragInitThresh && absX > absY) {
+                this._dragging  = true;
+                this._dragLastX = t.clientX;
+                this._dragAccum = 0;
+            } else if (absY > absX + 8) {
+                // Vertical intent — don't hijack as drag
+                return;
+            } else {
+                return; // not enough movement yet
+            }
+        }
+
+        // Accumulate pixel delta and fire moves per cell crossed
+        const delta = t.clientX - this._dragLastX;
+        this._dragLastX  = t.clientX;
+        this._dragAccum += delta;
+
+        const cells = Math.trunc(this._dragAccum / this.cellWidth);
+        if (cells !== 0) {
+            this._dragAccum -= cells * this.cellWidth;
+            const dir = Math.sign(cells);
+            for (let i = 0; i < Math.abs(cells); i++) {
+                if (game.state.movePiece(dir, 0)) game.audio.play('move');
+            }
+        }
+    }
+
+    // ── Touch end — classify gesture ──────────────────────────────────────────
     onTouchEnd(e) {
         e.preventDefault();
         if (!game || !game.state) return;
 
-        // Resume from pause on any tap
-        if (game.state.paused) { game.togglePause(); return; }
-        if (game.state.gameOver) return;
+        // Any touch resumes pause
+        if (game.state.paused) { game.togglePause(); this._resetDrag(); return; }
+        if (game.state.gameOver) { this._resetDrag(); return; }
 
-        const t = e.changedTouches[0];
-        const dx = t.clientX - this.touchStartX;
-        const dy = t.clientY - this.touchStartY;
-        const dt = performance.now() - this.touchStartTime;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const t    = e.changedTouches[0];
+        const dx   = t.clientX - this.touchStartX;
+        const dy   = t.clientY - this.touchStartY;
+        const dt   = performance.now() - this.touchStartTime;
+        const dist = Math.hypot(dx, dy);
+        const absX = Math.abs(dx);
+        const absY = Math.abs(dy);
 
-        // ── Tap → rotate ──────────────────────────────────────────────────────
+        // ── Horizontal drag ended — nothing extra needed ───────────────────────
+        if (this._dragging) {
+            this._resetDrag();
+            return;
+        }
+
+        // ── Tap → rotate CW  /  double-tap → rotate CCW ───────────────────────
         if (dist < this.tapMaxMove && dt < this.tapMaxTime) {
             const now = performance.now();
             if (now - this.lastTapTime < this.doubleTapGap) {
-                // Double-tap → rotate CCW
                 if (game.state.rotatePiece(-1)) game.audio.play('rotate');
                 this.lastTapTime = 0;
             } else {
                 this.lastTapTime = now;
-                if (game.state.rotatePiece(1)) game.audio.play('rotate');
+                if (game.state.rotatePiece(1))  game.audio.play('rotate');
             }
             return;
         }
 
-        const absX = Math.abs(dx);
-        const absY = Math.abs(dy);
-
-        // ── Horizontal swipe → move ───────────────────────────────────────────
-        if (absX > absY && absX > this.swipeThreshold) {
-            const dir = dx > 0 ? 1 : -1;
-            if (game.state.movePiece(dir, 0)) game.audio.play('move');
+        // ── Swipe up → rotate CW ─────────────────────────────────────────────
+        if (absY > absX && dy < -this.swipeThreshold) {
+            if (game.state.rotatePiece(1)) game.audio.play('rotate');
             return;
         }
 
-        // ── Vertical swipe ────────────────────────────────────────────────────
-        if (absY > absX && absY > this.swipeThreshold) {
-            if (dy > 0) {
-                const speed = absY / dt; // px/ms
-                if (speed >= this.hardDropSpeed) {
-                    game.state.hardDrop();
-                    game.audio.play('drop');
-                } else {
-                    // Slow downward swipe → brief soft drop
-                    game.state.softDropping = true;
-                    setTimeout(() => { if (game && game.state) game.state.softDropping = false; }, 400);
-                }
+        // ── Swipe down → hard drop (fast) or soft drop (slow) ────────────────
+        if (absY > absX && dy > this.swipeThreshold) {
+            const speed = absY / dt; // px/ms
+            if (speed >= this.hardDropSpeed) {
+                game.state.hardDrop();
+                game.audio.play('drop');
             } else {
-                // Swipe up → hold
-                if (game.state.holdCurrentPiece()) game.audio.play('hold');
-                else game.audio.play('holdLocked');
+                game.state.softDropping = true;
+                setTimeout(() => { if (game && game.state) game.state.softDropping = false; }, 400);
             }
         }
-    }
-
-    // ── Button actions ────────────────────────────────────────────────────────
-    _startDAS(dir) {
-        if (!game || !game.state || game.state.gameOver || game.state.paused) return;
-        if (game.state.movePiece(dir, 0)) game.audio.play('move');
-        this._stopDAS();
-        const das = (game.input && game.input.das) || 133;
-        const arr = (game.input && game.input.arr) || 10;
-        this._dasTimeout = setTimeout(() => {
-            this._dasInterval = setInterval(() => {
-                if (!game || !game.state || game.state.gameOver || game.state.paused) { this._stopDAS(); return; }
-                if (game.state.movePiece(dir, 0)) game.audio.play('move');
-            }, Math.max(arr, 16));
-        }, das);
-    }
-
-    _stopDAS() {
-        clearTimeout(this._dasTimeout);
-        clearInterval(this._dasInterval);
-        this._dasTimeout = null;
-        this._dasInterval = null;
-    }
-
-    _rotate(dir) {
-        if (!game || !game.state || game.state.gameOver || game.state.paused) return;
-        if (game.state.rotatePiece(dir)) game.audio.play('rotate');
-    }
-
-    _hardDrop() {
-        if (!game || !game.state || game.state.gameOver || game.state.paused) return;
-        game.state.hardDrop();
-        game.audio.play('drop');
-    }
-
-    _startSoftDrop() {
-        if (!game || !game.state) return;
-        game.state.softDropping = true;
-        this._softDropActive = true;
-    }
-
-    _stopSoftDrop() {
-        if (!game || !game.state) return;
-        game.state.softDropping = false;
-        this._softDropActive = false;
-    }
-
-    _hold() {
-        if (!game || !game.state || game.state.gameOver || game.state.paused) return;
-        if (game.state.holdCurrentPiece()) game.audio.play('hold');
-        else game.audio.play('holdLocked');
     }
 }
 
@@ -1452,7 +1475,7 @@ class Game {
 // BLOCK COLOR SYSTEM
 // ═══════════════════════════════════════════════════════════════════════════
 const BC_KEY='glypfall_block_colors';
-const BC_DEFAULTS={I:'#dce8ff',O:'#fffadc',T:'#e8d8ff',S:'#d8f5e8',Z:'#ffd8d8',J:'#d8eeff',L:'#fff0d8'};
+const BC_DEFAULTS={I:'#7eb8d4',O:'#c9a65b',T:'#cc1a1a',S:'#6b9e78',Z:'#c45c2a',J:'#3a5f8a',L:'#d4b896'};
 const BC_PIECES=['I','O','T','S','Z','J','L'];
 
 function bc_darken(hex,pct){const n=parseInt(hex.replace('#',''),16),a=Math.round(2.55*pct);return '#'+((1<<24)+(Math.max(0,(n>>16)-a)<<16)+(Math.max(0,((n>>8)&0xff)-a)<<8)+Math.max(0,(n&0xff)-a)).toString(16).slice(1);}
@@ -1505,7 +1528,7 @@ function bc_wireInputs(){
 }
 
 const BC_PALETTES = {
-    default: {I:'#dce8ff',O:'#fffadc',T:'#e8d8ff',S:'#d8f5e8',Z:'#ffd8d8',J:'#d8eeff',L:'#fff0d8'},
+    default: {I:'#7eb8d4',O:'#c9a65b',T:'#cc1a1a',S:'#6b9e78',Z:'#c45c2a',J:'#3a5f8a',L:'#d4b896'},
     classic: {I:'#00cfff',O:'#ffe600',T:'#cc44ff',S:'#44ee88',Z:'#ff4444',J:'#4488ff',L:'#ff8800'},
     mono:    {I:'#ffffff',O:'#d8d8d8',T:'#b0b0b0',S:'#888888',Z:'#606060',J:'#404040',L:'#c8c8c8'},
     ocean:   {I:'#7ff0ff',O:'#b8f0ff',T:'#4488dd',S:'#22bbcc',Z:'#0055aa',J:'#88ddff',L:'#55aacc'},
@@ -1585,14 +1608,41 @@ bc_load(); // loads individual colors only; palette applied below after BC_PALET
 let game;
 window.addEventListener('DOMContentLoaded',()=>{
     game=new Game();
+
+    // Remove splash from DOM entirely after animation so it can't block touches
+    const splash=document.getElementById('splashScreen');
+    if(splash){
+        splash.addEventListener('animationend',(e)=>{
+            // Only react to the splash's own splashOut animation, not bubbled child animations
+            if(e.target===splash && e.animationName==='splashOut'){
+                splash.style.display='none';
+                splash.style.pointerEvents='none';
+            }
+        });
+        // Fallback: force hide after 5.5s
+        setTimeout(()=>{ splash.style.display='none'; splash.style.pointerEvents='none'; }, 5500);
+    }
+
     function scaleGame(){
         const layout=document.querySelector('.game-layout');
         if(!layout) return;
-        const scaleH=(window.innerHeight-10)/(layout.scrollHeight||720);
-        const scaleW=(window.innerWidth-10)/(layout.scrollWidth||620);
-        const scale=Math.min(1,scaleH,scaleW);
-        layout.style.transform=scale<1?`scale(${scale})`:'';
-        layout.style.transformOrigin='top center';
+        const vw=window.innerWidth, vh=window.innerHeight;
+        const isMobile=vw<=700;
+        if(isMobile){
+            // On mobile, hide side panels and scale board to fill width
+            const boardWidth=300, padding=20;
+            const scaleW=(vw-padding)/boardWidth;
+            const scaleH=(vh*0.72)/600; // leave room for controls
+            const scale=Math.min(scaleW,scaleH,1.2);
+            layout.style.transform=`scale(${scale})`;
+            layout.style.transformOrigin='top center';
+        } else {
+            const scaleH=(vh-10)/(layout.scrollHeight||720);
+            const scaleW=(vw-10)/(layout.scrollWidth||620);
+            const scale=Math.min(1,scaleH,scaleW);
+            layout.style.transform=scale<1?`scale(${scale})`:'';
+            layout.style.transformOrigin='top center';
+        }
     }
     scaleGame();
     window.addEventListener('resize',scaleGame);

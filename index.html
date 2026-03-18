@@ -2,22 +2,92 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
     <title>Glypfall</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23000'/><rect x='4' y='4' width='10' height='10' fill='%23fff' rx='1'/><rect x='4' y='18' width='10' height='10' fill='%23aaa' rx='1'/><rect x='18' y='4' width='10' height='10' fill='%23ccc' rx='1'/><rect x='18' y='18' width='10' height='10' fill='%23777' rx='1'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=IM+Fell+English:ital@0;1&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <!-- ═══════════════════ SPLASH ═══════════════════ -->
 <div id="splashScreen" class="splash-screen">
-    <div class="splash-inner">
 
+    <!-- Letterbox cinema bars -->
+    <div class="splash-lb-top"></div>
+    <div class="splash-lb-bot"></div>
+
+    <!-- Painted dusk background -->
+    <div class="splash-bg"></div>
+
+    <!-- Torii gate silhouette -->
+    <div class="splash-torii">
+        <svg viewBox="0 0 220 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Torii gate -->
+            <rect x="10" y="20" width="200" height="10" rx="2" fill="#c9a65b" opacity="0.9"/>
+            <rect x="20" y="8" width="180" height="8" rx="2" fill="#c9a65b" opacity="0.7"/>
+            <!-- Left pillar -->
+            <rect x="38" y="28" width="14" height="152" rx="2" fill="#c9a65b" opacity="0.85"/>
+            <!-- Right pillar -->
+            <rect x="168" y="28" width="14" height="152" rx="2" fill="#c9a65b" opacity="0.85"/>
+            <!-- Left foot brace -->
+            <rect x="24" y="148" width="30" height="8" rx="2" fill="#c9a65b" opacity="0.6"/>
+            <!-- Right foot brace -->
+            <rect x="166" y="148" width="30" height="8" rx="2" fill="#c9a65b" opacity="0.6"/>
+            <!-- Top lintel ends -->
+            <rect x="4" y="18" width="14" height="16" rx="2" fill="#c9a65b" opacity="0.8"/>
+            <rect x="202" y="18" width="14" height="16" rx="2" fill="#c9a65b" opacity="0.8"/>
+        </svg>
+    </div>
+
+    <!-- Decorative corner brushstrokes -->
+    <div class="splash-corner tl">
+        <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 2 L2 48" stroke="#c9a65b" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+            <path d="M2 2 L48 2" stroke="#c9a65b" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+        </svg>
+    </div>
+    <div class="splash-corner tr">
+        <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M48 2 L48 48" stroke="#c9a65b" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+            <path d="M48 2 L2 2" stroke="#c9a65b" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+        </svg>
+    </div>
+    <div class="splash-corner bl">
+        <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 48 L2 2" stroke="#c9a65b" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+            <path d="M2 48 L48 48" stroke="#c9a65b" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+        </svg>
+    </div>
+    <div class="splash-corner br">
+        <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M48 48 L48 2" stroke="#c9a65b" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+            <path d="M48 48 L2 48" stroke="#c9a65b" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+        </svg>
+    </div>
+
+    <!-- Central content -->
+    <div class="splash-inner">
+        <div class="splash-publisher">A Lin Production</div>
         <div class="splash-logo">GLYP<span>FALL</span></div>
+        <div class="splash-subtitle">On the winds of change, the tiles fall</div>
         <div class="splash-ver">v3.0</div>
-        <div class="splash-bar"><div class="splash-fill"></div></div>
+        <div class="splash-bar-wrap">
+            <div class="splash-bar-label">Preparing the battlefield</div>
+            <div class="splash-bar"><div class="splash-fill"></div></div>
+            <div class="splash-dots">
+                <div class="splash-dot"></div>
+                <div class="splash-dot"></div>
+                <div class="splash-dot"></div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -144,22 +214,6 @@
 
             <!-- Board -->
             <div class="board-col">
-                <!-- Mobile HUD: Hold + Next + Stats shown above/below board on mobile -->
-                <div class="mobile-hud" style="display:none">
-                    <div class="mobile-hud-hold">
-                        <div class="mobile-hud-lbl">HOLD</div>
-                        <canvas id="holdCanvasMobile" width="80" height="62" style="width:72px;height:auto"></canvas>
-                    </div>
-                    <div class="mobile-hud-next">
-                        <div class="mobile-hud-lbl">NEXT</div>
-                        <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
-                            <canvas class="next-canvas-mobile" width="60" height="48" style="width:54px;height:auto"></canvas>
-                            <canvas class="next-canvas-mobile" width="50" height="38" style="width:44px;height:auto;opacity:0.7"></canvas>
-                            <canvas class="next-canvas-mobile" width="50" height="38" style="width:44px;height:auto;opacity:0.5"></canvas>
-                            <canvas class="next-canvas-mobile" width="50" height="38" style="width:44px;height:auto;opacity:0.35"></canvas>
-                        </div>
-                    </div>
-                </div>
                 <div class="board-header">
                     <div class="bh-mode" id="modeLabel">MARATHON</div>
                     <div class="bh-target" id="targetLabel"></div>
@@ -201,18 +255,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Mobile stats strip (shown below board on mobile) -->
-                <div class="mobile-stats-strip" style="display:none">
-                    <div class="mss-cell"><div class="mss-lbl">SCORE</div><div class="mss-val accent" id="mScore">0</div></div>
-                    <div class="mss-cell"><div class="mss-lbl">LINES</div><div class="mss-val" id="mLines">0</div></div>
-                    <div class="mss-cell"><div class="mss-lbl">LEVEL</div><div class="mss-val" id="mLevel">1</div></div>
-                    <div class="mss-cell"><div class="mss-lbl">COMBO</div><div class="mss-val accent" id="mCombo">0</div></div>
-                    <div class="mss-cell"><div class="mss-lbl">TIME</div><div class="mss-val mono" id="mTime">0:00</div></div>
-                    <div class="mss-cell"><div class="mss-lbl">PPS</div><div class="mss-val mono" id="mPPS">0.00</div></div>
-                    <div class="mss-cell"><div class="mss-lbl">B2B</div><div class="mss-val mono" id="mB2b">0</div></div>
-                    <div class="mss-cell"><div class="mss-lbl">APM</div><div class="mss-val mono" id="mApm">0</div></div>
                 </div>
             </div>
 
@@ -372,15 +414,15 @@
                     <div class="sgroup">
                         <div class="sgroup-title">COLOR PALETTE</div>
                         <div class="palette-grid" id="palettePicker">
-                            <button class="palette-opt" data-palette="default" title="Default">
+                            <button class="palette-opt" data-palette="default" title="Tsushima">
                                 <div class="pal-swatches">
-                                    <div class="pal-sw" style="background:#dce8ff"></div>
-                                    <div class="pal-sw" style="background:#fffadc"></div>
-                                    <div class="pal-sw" style="background:#e8d8ff"></div>
-                                    <div class="pal-sw" style="background:#d8f5e8"></div>
-                                    <div class="pal-sw" style="background:#ffd8d8"></div>
-                                    <div class="pal-sw" style="background:#d8eeff"></div>
-                                    <div class="pal-sw" style="background:#fff0d8"></div>
+                                    <div class="pal-sw" style="background:#7eb8d4"></div>
+                                    <div class="pal-sw" style="background:#c9a65b"></div>
+                                    <div class="pal-sw" style="background:#cc1a1a"></div>
+                                    <div class="pal-sw" style="background:#6b9e78"></div>
+                                    <div class="pal-sw" style="background:#c45c2a"></div>
+                                    <div class="pal-sw" style="background:#3a5f8a"></div>
+                                    <div class="pal-sw" style="background:#d4b896"></div>
                                 </div>
                                 <div class="pal-name">DEFAULT</div>
                             </button>
@@ -447,16 +489,17 @@
                             <label class="color-row"><div class="color-swatch" id="swatch-L"></div><span class="color-label">L — piece</span><input type="color" id="color-L"></label>
                         </div>
                         <div class="color-actions">
-                            <button class="color-save-btn" id="saveColors"><span class="icon-save"></span> Save Colors</button>
-                            <button class="color-reset-btn" id="resetColors"><span class="icon-reset"></span> Reset</button>
+                            <button class="color-save-btn" id="saveColors"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Save Colors</button>
+                            <button class="color-reset-btn" id="resetColors"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M3 12a9 9 0 1 0 9-9 9 9 0 0 0-6.36 2.64L3 8"/><path d="M3 3v5h5"/></svg> Reset</button>
                         </div>
                     </div>
 
                     <div class="sgroup">
                         <div class="sgroup-title">BLOCK THEME</div>
                         <div class="theme-grid" id="themePicker">
-                            <button class="theme-opt active" data-theme="solid"><div class="topt-preview"><div class="tpv-cell solid-prev theme-swatch" data-piece="I"></div><div class="tpv-cell solid-prev theme-swatch" data-piece="T"></div><div class="tpv-cell solid-prev theme-swatch" data-piece="L"></div></div><div class="topt-name">SOLID</div><div class="topt-desc">Gradient filled</div></button>
+                            <button class="theme-opt" data-theme="solid"><div class="topt-preview"><div class="tpv-cell solid-prev theme-swatch" data-piece="I"></div><div class="tpv-cell solid-prev theme-swatch" data-piece="T"></div><div class="tpv-cell solid-prev theme-swatch" data-piece="L"></div></div><div class="topt-name">SOLID</div><div class="topt-desc">Gradient filled</div></button>
                             <button class="theme-opt" data-theme="glyph"><div class="topt-preview"><div class="tpv-cell glyph-prev theme-swatch" data-piece="I"></div><div class="tpv-cell glyph-prev theme-swatch" data-piece="T"></div><div class="tpv-cell glyph-prev theme-swatch" data-piece="L"></div></div><div class="topt-name">GLYPH</div><div class="topt-desc">Outline only</div></button>
+                            <button class="theme-opt active" data-theme="tsushima"><div class="topt-preview"><div class="tpv-cell tsushima-prev theme-swatch" data-piece="I"></div><div class="tpv-cell tsushima-prev theme-swatch" data-piece="T"></div><div class="tpv-cell tsushima-prev theme-swatch" data-piece="L"></div></div><div class="topt-name">DEFAULT</div><div class="topt-desc">Lacquer &amp; ink</div></button>
                             <button class="theme-opt" data-theme="neon"><div class="topt-preview"><div class="tpv-cell neon-prev theme-swatch" data-piece="I"></div><div class="tpv-cell neon-prev theme-swatch" data-piece="T"></div><div class="tpv-cell neon-prev theme-swatch" data-piece="L"></div></div><div class="topt-name">NEON</div><div class="topt-desc">Glowing bloom</div></button>
                             <button class="theme-opt" data-theme="minimal"><div class="topt-preview"><div class="tpv-cell minimal-prev theme-swatch" data-piece="I"></div><div class="tpv-cell minimal-prev theme-swatch" data-piece="T"></div><div class="tpv-cell minimal-prev theme-swatch" data-piece="L"></div></div><div class="topt-name">MINIMAL</div><div class="topt-desc">Flat translucent</div></button>
                             <button class="theme-opt" data-theme="crystal"><div class="topt-preview"><div class="tpv-cell crystal-prev theme-swatch" data-piece="I"></div><div class="tpv-cell crystal-prev theme-swatch" data-piece="T"></div><div class="tpv-cell crystal-prev theme-swatch" data-piece="L"></div></div><div class="topt-name">CRYSTAL</div><div class="topt-desc">Gem-like facets</div></button>
@@ -466,7 +509,7 @@
                 </div>
             </div>
 
-            <button class="back-btn" id="backToMenu">← BACK TO MENU</button>
+            <button class="back-btn" id="backToMenu">BACK TO MENU</button>
         </div>
     </div>
 
@@ -510,7 +553,7 @@
                 <div class="bg-cards" id="bestGameCards"></div>
             </div>
 
-            <button class="back-btn" id="backToMenuFromStats">← BACK TO MENU</button>
+            <button class="back-btn" id="backToMenuFromStats">BACK TO MENU</button>
         </div>
     </div>
 
@@ -533,7 +576,7 @@
                 <tbody id="leaderboardBody"></tbody>
             </table>
             <div class="lb-footer">
-                <button class="back-btn" id="backToMenuFromLeaderboard">Back to Menu</button>
+                <button class="back-btn" id="backToMenuFromLeaderboard">BACK TO MENU</button>
                 <button class="lb-copy-btn" id="copyTop3Btn">Copy Top 3</button>
                 <button class="lb-clear-btn" id="clearLeaderboard">Clear Board</button>
             </div>
